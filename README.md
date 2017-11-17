@@ -10,5 +10,6 @@ Please cite this paper if you use this code in your published research project.
 ## Requirement
 In MATLAB:
 ``` 
->>mex -v -g -largeArrayDims tste_svrg_bb_epsilon_mex_ifo_time.c
+>>mex -v -g -largeArrayDims *.c
 ```
+and run the script with the mex function, data file in the same directory.
