@@ -1,0 +1,329 @@
+\def\year{2018}\relax
+%File: formatting-instruction.tex
+\documentclass[./sbb_ordinal_embedding_aaai18.tex]{subfiles}%DO NOT CHANGE THIS
+%\usepackage{aaai18}  %Required
+%\usepackage{times}  %Required
+%\usepackage{helvet}  %Required
+%\usepackage{courier}  %Required
+%\usepackage{url}  %Required
+%\usepackage{graphicx}  %Required
+%\usepackage{subfig}
+%\usepackage{amsmath}
+%\usepackage{amsfonts}
+%\usepackage{amssymb}
+%\usepackage{amsthm}
+%\usepackage{bbm}
+%\usepackage{color}
+%\newtheorem{theorem}{Theorem}
+%\newtheorem{lemma}{Lemma}
+%\newtheorem*{corollary*}{Proof Sketch}
+%\newtheorem{assumption}{Assumption}
+%\newtheorem{definition}{Definition}
+%\newtheorem{proposition}{Proposition}
+%\usepackage{algorithm}
+%\usepackage{algorithmic}
+%\newcommand{\theHalgorithm}{\arabic{algorithm}}
+%\newcommand{\diag}{\rm{diag}}%
+
+%%\newcommand{\commyy}[1]{{\color{red}(yy: #1)}} % Yuan Yao's comments
+%%\newcommand{\commmk}[1]{{\color{blue}(mk: #1)}} % Ke Ma's comments%
+%
+
+%\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+%\renewcommand{\algorithmicensure}{\textbf{Output:}}
+
+\begin{document}
+% The file aaai.sty is the style file for AAAI Press
+% proceedings, working notes, and technical reports.
+%
+\twocolumn[\section*{Supplementary Materials for \\"Stochastic Non-convex Ordinal Embedding with Stabilized Barzilai-Borwein Step Size"}]
+
+
+\section{Proof of Lemma \ref{lemma:1}}
+	\label{proof:lemma1}
+	\begin{proof}
+		Let
+		\begin{equation}
+		\mathbf{X}_p =
+		\begin{pmatrix}
+		\mathbf{X}_1 \\
+		\mathbf{X}_2
+		\end{pmatrix} =
+		\begin{pmatrix}
+		\mathbf{x}_i \\
+		\mathbf{x}_j \\
+		\mathbf{x}_l \\
+		\mathbf{x}_k
+		\end{pmatrix}
+		\end{equation}
+		where $\mathbf{X}_1=[\mathbf{x}_i^T,\mathbf{x}_j^T]^T$, $\mathbf{X}_2=[\mathbf{x}_l^T,\mathbf{x}_k^T]^T$ and
+		\begin{equation}
+		\mathbf{M} =
+		\left(\begin{array}{cc}
+		\mathbf{M}_1 & \\
+		& \mathbf{M}_2 \\
+		\end{array}\right) =
+		\left(\begin{array}{rrrr}
+		\mathbf{I}& -\mathbf{I}&  &   \\
+		-\mathbf{I}& \mathbf{I}&  &   \\
+		&  & -\mathbf{I}& \mathbf{I} \\
+		&  &  \mathbf{I}& -\mathbf{I}
+		\end{array}\right)
+		\end{equation}
+		where $\mathbf{I}_{d\times d}$ is the identity matrix.
+		
+		The first-order gradient of CKL is
+		\begin{equation}
+		\begin{aligned}
+		& \nabla f^{\text{ckl}}_p(\mathbf{X}) &=&\
+		\frac{2\mathbf{MX}_p}{d^2_{ij}(\mathbf{X})+d^2_{lk}(\mathbf{X})+2\delta}\\
+		& &-& \frac{2\left(\begin{array}{cc}\ \mathbf{O} & \\ & \mathbf{M}_2\mathbf{X}_2 \\ \end{array}\right)}{d^2_{lk}(\mathbf{X})+\delta}
+		\end{aligned}
+		\end{equation}
+		%\begin{pmatrix}
+		% \mathbf{x}_i-\mathbf{x}_j\\
+		% \mathbf{x}_j-\mathbf{x}_i \\
+		% \frac{d^2_{ij}(\mathbf{X})+\delta}{d^2_{lk}(\mathbf{X})+\delta}(\mathbf{x}_k-\mathbf{x}_l) \\
+		% \frac{d^2_{ij}(\mathbf{X})+\delta}{d^2_{lk}(\mathbf{X})+\delta}(\mathbf{x}_l-\mathbf{x}_k)
+		%\end{pmatrix},
+		and the second-order Hessian matrix of CKL is
+		\begin{equation}
+		\begin{aligned}
+		& \nabla^2 f^{\text{ckl}}_p(\mathbf{X}) &=&\ \ \frac{2\mathbf{M}}{d^2_{ij}(\mathbf{X})+d^2_{lk}(\mathbf{X})+2\delta}\\
+		& &-&\ \frac{4\mathbf{MX}_p\mathbf{X}_p^T\mathbf{M}}{[d^2_{ij}(\mathbf{X})+d^2_{lk}(\mathbf{X})+2\delta]^2} \\
+		& &-&\ \frac{2\left(\begin{array}{cc}\ \mathbf{O} & \\ & \mathbf{M}_2 \\ \end{array}\right)}{d^2_{lk}(\mathbf{X})+\delta}\\
+		& &+&\ \frac{4\left(\begin{array}{cc}\ \mathbf{O} & \\ & \mathbf{M}_2\mathbf{X}_2\mathbf{X}^T_2\mathbf{M}_2 \\ \end{array}\right)}{[d^2_{lk}(\mathbf{X})+\delta]^2}.
+		\end{aligned}
+		\end{equation}
+		As $\mathbf{X}\in\mathbb{R}^{n\times d}$ is bounded, $\forall p=(i,j,l,k)$, $d^2_{ij}(\mathbf{X})$ and $d^2_{lk}(\mathbf{X})$ is bounded. So any element of $\nabla^2 f^{\text{ckl}}_p(\mathbf{X})$ is bounded , and $\nabla^2 f^{\text{ckl}}_p(\mathbf{X})$ has bounded eigenvalues. By the definition of Lipschitz continuity, we have the loss function of CKL (\ref{eq:scale-invariant}) has Lipschitz continuous gradient with bounded $\mathbf{X}$.
+		
+		\begin{figure*}[thb!]
+			\begin{equation}
+			\label{eq:gradient:student}
+			\begin{aligned}
+			& \nabla f^{\text{tste}}_p(\mathbf{X})=\frac{\alpha+1}{s_{ij}}\left(\begin{array}{cc}\mathbf{M}_1\mathbf{X}_1 & \\ & \mathbf{O} \\ \end{array}\right)-\frac{\alpha^{-\alpha}(\alpha+1)}{s_{ij}^{-\frac{\alpha+1}{2}}+s_{lk}^{-\frac{\alpha+1}{2}}}\left(\begin{array}{cc}s_{ij}^{-\frac{\alpha+3}{2}}\mathbf{M}_1\mathbf{X}_1 & \\ & s_{lk}^{-\frac{\alpha+3}{2}}\mathbf{M}_2\mathbf{X}_2 \\ \end{array}\right)
+			\end{aligned}
+			\end{equation}
+		\end{figure*}
+		
+		\begin{figure*}[thb!]
+			\begin{equation}
+			\label{eq:hessian:student}
+			\begin{aligned}
+			& \nabla^2 f^{\text{tste}}_p(\mathbf{X}) &=&\ \ \ \frac{\alpha+1}{s_{ij}^2}\left(\begin{array}{cc}s_{ij}\mathbf{M}_1-2\mathbf{M}_1\mathbf{X}_1\mathbf{X}^T_1\mathbf{M}_1 & \\ & \mathbf{O} \\ \end{array}\right)-\frac{\alpha^{-\alpha}(\alpha+1)}{s_{ij}^{-\frac{\alpha+1}{2}}+s_{lk}^{-\frac{\alpha+1}{2}}}\left(\begin{array}{cc}s_{ij}^{-\frac{\alpha+3}{2}}\mathbf{M}_1 & \\ & s_{lk}^{-\frac{\alpha+3}{2}}\mathbf{M}_2\end{array}\right)\\
+			& &+&\ \ \ \frac{\alpha^{-\alpha}(\alpha+1)^2}{\left(s_{ij}^{-\frac{\alpha+1}{2}}+s_{lk}^{-\frac{\alpha+1}{2}}\right)^2}\left(\begin{array}{cc}s_{ij}^{-(\alpha+3)}\mathbf{M}_1\mathbf{X}_1\mathbf{X}^T_1\mathbf{M}_1 & \\ & s_{lk}^{-(\alpha+3)}\mathbf{M}_2\mathbf{X}_2\mathbf{X}^T_2\mathbf{M}_2\end{array}\right)\\
+			& &+&\ \ \ \frac{\alpha^{-\alpha}(\alpha+1)(\alpha+3)}{s_{ij}^{-\frac{\alpha+1}{2}}+s_{lk}^{-\frac{\alpha+1}{2}}}\left(\begin{array}{cc}s_{ij}^{-\frac{\alpha+5}{2}}\mathbf{M}_1\mathbf{X}_1\mathbf{X}_1^T\mathbf{M}_1 & \\ & s_{lk}^{-\frac{\alpha+5}{2}}\mathbf{M}_2\mathbf{X}_2\mathbf{X}_2^T\mathbf{M}_2\end{array}\right)
+			\end{aligned}
+			\end{equation}
+		\end{figure*}
+		
+		The first-order gradient of STE (\ref{eq:logistic}) is
+		\begin{equation}
+		\nabla f^{\text{ste}}_p(\mathbf{X})=
+		%\mathbb{E}[(\mathbf{x}-\mathbb{E}(\mathbf{x}))^2]
+		2\frac{\exp(d^2_{ij}(\mathbf{X})-d^2_{lk}(\mathbf{X}))}{1+\exp(d^2_{ij}(\mathbf{X})-d^2_{lk}(\mathbf{X}))}\mathbf{MX}_p
+		\end{equation}
+		%We note
+		%$$
+		% p=2\frac{\exp(d^2_{ij}(\mathbf{X})-d^2_{lk}(\mathbf{X}))}{1+\exp(d^2_{ij}(\mathbf{X})-d^2_{lk}(\mathbf{X}))}
+		%$$
+		and the second-order Hessian matrix of STE (\ref{eq:logistic}) is
+		\begin{equation}
+		\begin{aligned}
+		& & & \nabla^2 f^{\text{ste}}_p(\mathbf{X})\\
+		& &=&\ 4\frac{\exp(d^2_{ij}(\mathbf{X})-d^2_{lk}(\mathbf{X}))}{[1+\exp(d^2_{ij}(\mathbf{X})-d^2_{lk}(\mathbf{X}))]^2}\mathbf{MX}_p\mathbf{X}^T_p\mathbf{M}\\
+		& &+&\ 2\frac{\exp(d^2_{ij}(\mathbf{X})-d^2_{lk}(\mathbf{X}))}{1+\exp(d^2_{ij}(\mathbf{X})-d^2_{lk}(\mathbf{X}))}\mathbf{M}.
+		\end{aligned}
+		\end{equation}
+		All elements of $\nabla^2 f^{\text{ckl}}_p(\mathbf{X})$ are bounded. So the eigenvalues of $\nabla^2 f^{\text{ckl}}_p(\mathbf{X})$ are bounded. By the definition of Lipschitz continuity, (\ref{eq:logistic}) has Lipschitz continuous gradient with bounded $\mathbf{X}$.
+		
+		The first-order gradient of GNMDS (\ref{eq:hinge}) is
+		\begin{equation}
+		\nabla f^{\text{gnmds}}_p(\mathbf{X})=
+		\left\{\begin{array}{cl}
+		\mathbf{0}, &\ \text{if}\ d^2_{ij}(\mathbf{X})+1-d^2_{lk}(\mathbf{X})<0,\\
+		%2\begin{pmatrix}
+		% \mathbf{x}_i-\mathbf{x}_j \\
+		% \mathbf{x}_j-\mathbf{x}_i \\
+		% \mathbf{x}_k-\mathbf{x}_l \\
+		% \mathbf{x}_l-\mathbf{x}_k
+		% \end{pmatrix}, & \text{otherwise}.
+		2\mathbf{MX}_p, &\ \text{otherwise},
+		\end{array}\right.
+		\end{equation}
+		and the second-order Hessian matrix of GNMDS (\ref{eq:hinge}) is
+		\begin{equation}
+		\nabla^2 f^{\text{gnmds}}_p(\mathbf{X})=
+		\left\{\begin{array}{cl}
+		\mathbf{0}, & \text{if}\ d^2_{ij}(\mathbf{X})+1-d^2_{lk}(\mathbf{X})<0,\\
+		%2\begin{pmatrix}
+		%  1& -1&  0&  0 \\
+		% -1&  1&  0&  0 \\
+		%  0&  0& -1&  1 \\
+		%  0&  0&  1& -1
+		%\end{pmatrix}, & \text{otherwise},
+		2\mathbf{M}, &\ \text{otherwise}.
+		\end{array}\right.
+		\end{equation}
+		If $d^2_{ij}(\mathbf{X})+1-d^2_{lk}(\mathbf{X})\neq 0$ for all $p\in\mathcal{P}$, $\nabla f^{\text{gnmds}}_p(\mathbf{X})$ is continuous on $\{\mathbf{x}_i, \mathbf{x}_j, \mathbf{x}_l, \mathbf{x}_k\}$ and the Hessian matrix $\nabla^2 f^{\text{gnmds}}_p(\mathbf{X})$ has bounded eigenvalues. So GNMDS has Lipschitz continuous gradient in some quadruple set as $\{\mathbf{x}_i, \mathbf{x}_j, \mathbf{x}_l, \mathbf{x}_k\}\subset\mathbb{R}^{p \times 4}$. As the special case of $p=(i,j,l,k)$ which satisfied $d^2_{ij}(\mathbf{X})+1-d^2_{lk}(\mathbf{X})=0$ is exceedingly rare, we split the embedding $\mathbf{X}$ into pieces $\{\mathbf{x}_i, \mathbf{x}_j, \mathbf{x}_l, \mathbf{x}_k\}$ and employ SGD and SVRG to optimize the objective function of GNMDS (\ref{eq:hinge}). The empirical results are showed in the Experiment section.
+		
+		Note $s_{ij} = \alpha+d^2_{ij}(\mathbf{X})$, and the first-order gradient of TSTE is (\ref{eq:gradient:student}).
+		The second-order Hessian matrix of TSTE is (\ref{eq:hessian:student}). The boundedness of eigenvalues of The loss function of $\nabla^2 f^{\text{tste}}_p(\mathbf{X})$ can infer that the TSTE loss function (\ref{eq:student}) has Lipschitz continuous gradient with bounded $\mathbf{X}$.
+		
+		We focus on  a special case of quadruple comparisons as $i=l$ and $\{i,j,i,k\}\subset[n]^3$ in the Experiment section. To verify the Lipschitz continuous gradient of ordinal embedding objective functions with $c=(i,j,i,k)$ as $i=l$, we introduction the matrix $\mathbf{A}$ as
+		\begin{equation}
+		\mathbf{A} =
+		\left(\begin{array}{rrrr}
+		\mathbf{I} & \mathbf{0} & \mathbf{0} & \mathbf{0}\\
+		\mathbf{0} & \mathbf{I} & \mathbf{0} & \mathbf{I}\\
+		\mathbf{0} & \mathbf{0} & \mathbf{0} & \mathbf{I}
+		\end{array}\right).
+		\end{equation}
+		By chain rule for computing the derivative, we have
+		\begin{equation}
+		\begin{aligned}
+		& \nabla f_{ijk}(\mathbf{X}) &=&\ \ \ \mathbf{A}\nabla f_{ijlk}(\mathbf{X}),\\
+		& \nabla^2 f_{ijk}(\mathbf{X}) &=&\ \ \mathbf{A}\nabla^2 f_{ijlk}(\mathbf{X})\mathbf{A}^T.
+		\end{aligned}
+		\end{equation}
+		where $l = i$. As $\mathbf{A}$ is a constant matrix and $\nabla^2 f_{ijlk}(\mathbf{X})$ is bounded, all elements of the Hessian matrix $\nabla^2 f_{ijk}(\mathbf{X})$ are bounded. So the eigenvalues of $\nabla^2 f_{ijk}(\mathbf{X})$ is also bounded. The ordianl embedding functions of CKL, STE and TSTE with triplewise compsrisons have Lipschitz continuous gradient with bounded $\mathbf{X}$.
+	\end{proof}
+
+
+
+\section{Proof of Theorem \ref{svrg_bb_nonconvex}}
+
+In this section, we prove our main theorem, i.e., Theorem \ref{svrg_bb_nonconvex}. Before doing this, we need some lemmas.
+
+\begin{lemma}
+\label{lemma:analytic}
+Given some positive integer $l\geq 2$, then for any $0<x<\frac{1}{l}$, the following holds
+\[
+(1+x)^l \leq e^{l x} \leq 1 + 2 l x.
+\]
+\end{lemma}
+\begin{proof}
+Note that
+\[(1+x)^l = e^{l\cdot \ln(1+x)} \leq e^{lx},\]
+where the last inequality holds for $\ln(1+x) \leq x$ for any $0<x<1$. Thus, we get the first inequality. Let $h(z) = 1+2z-e^z$ for any $z\in (0,1)$. It is easy to check that $h(z) \geq 0$ for any $z \in (0,1)$. Thus we get the second inequality.
+\end{proof}
+
+In the following, we provide a key lemma that shows the convergence behavior of the inner loop of the proposed algorithm.
+Before presenting it, we define several constants and sequences. For any $0\leq s \leq S-1$, let
+\begin{align}
+&\beta_s : = 4(m-1)L^3 \eta_s^2, \label{eq:batas}\\
+&\rho_s : = 1+2\eta_s^2L^2[2(m-1)\eta_sL+1]\label{eq:rhos}.
+\end{align}
+Let $\{c_t^{s+1}\}_{t=1}^m$ be a nonnegative sequence satisfying $c_m^{s+1}=0$ and for $ t = m-1,\ldots,1$,
+\[
+c_t^{s+1} = c_{t+1}^{s+1} \left( 1+\eta_s \beta_s + 2\eta_s^2 L^2\right) + \eta_s^2 L^3.
+\]
+It is obvious that $\{c_t^{s+1}\}_{t=1}^m$ is monotonically decreasing as $t$ increasing, and
+\[
+c_1^{s+1} = \frac{\eta_s L^3 \cdot (\rho_s^{m-1}-1)}{\beta_s + 2\eta_s L^2}.
+\]
+Then we define
+\begin{align}
+\label{eq:Gammas}
+\Gamma_t^{s+1} : = \eta_s \left[ 1-\frac{c_{t+1}^{s+1}}{\beta_s} - \eta_s (1+2c_{t+1}^{s+1})\right],
+\end{align}
+for any $0\leq t \leq m-1$ and $0 \leq  s \leq S-1$.
+
+With the help of the sequences defined above, we present a key lemma as follows.
+\begin{lemma}[Convergence behavior of inner loop]
+\label{keylemma}
+Let $\{{\bf X}_t^{s+1}\}_{t=1}^m$ be a sequence generated by Algorithm \ref{alg:svrg-bb} at the $s$-th inner loop, $s=0,\ldots, S-1$. If the following conditions hold
+\begin{align}
+& \eta_s + 4(m-1)\eta_s^3 L^3 < 1/2, \label{cond1}\\
+& (m-1)\eta_s^2 L^2\left[ 2(m-1)\eta_s L +1\right] <1/2 \label{cond2},
+\end{align}
+then
+\[
+\mathbb{E}[\|\nabla F({\bf X}_t^{s+1})\|^2] \leq \frac{R_t^{s+1} - R_{t+1}^{s+1}}{\Gamma_t^{s+1}},
+\]
+where $R_t^{s+1}:= \mathbb{E}[F({\bf X}_t^{s+1}) + c_t^{s+1} \|{\bf X}_t^{s+1} - \tilde{\bf X}^s\|^2]$, $0\leq t \leq m-1.$
+\end{lemma}
+\begin{proof}
+This lemma is a special case of \cite[Lemma 1]{pmlr-v48-reddi16} with some specific choices of $\beta_s$. Thus, we only need to check the defined $\Gamma_t^{s+1}$ is positive for any $0\leq t\leq m-1$. In order to do this, we firs check that
+\begin{align}
+\label{c-beta}
+c_t^{s+1} < \frac{\beta_s}{2}, \quad t=1,\ldots,m
+\end{align}
+under the condition \eqref{cond2} of this lemma.
+
+
+Since $c_t^{s+1}$ is monotonically decreasing, thus \eqref{c-beta} is equivalent to showing $c_1^{s+1} < \frac{\beta_s}{2}$, which implies
+\begin{align}
+\label{c-beta1}
+\eta_sL^3(\rho_s^{m-1}-1) < \frac{1}{2}\beta_s(\beta_s + 2\eta_s L^2).
+\end{align}
+By Lemma \ref{lemma:analytic}, if \eqref{cond2} holds, then
+\[
+\rho_s^{m-1} < 1+4(m-1)\eta_s^2 L^2 \left[ 2(m-1)\eta_s L+1\right].
+\]
+It implies
+\begin{align*}
+\eta_s L^3 (\rho_s^{m-1}-1)
+& < 4(m-1)\eta_s^3 L^5 \left[ 2(m-1)\eta_s L +1 \right]\\
+& = 2(m-1)\eta_s^2 L^3 \left[ 4(m-1)\eta_s^2 L^3 + 2\eta_s L^2 \right]\\
+& = \frac{1}{2}\beta_s (\beta_s + 2\eta_s L^2).
+\end{align*}
+Thus, \eqref{c-beta} holds.
+
+In the next, we prove $\Gamma_t^{s+1}>0$, $t=0,\ldots, m-1$. By the definition of $\Gamma_t^{s+1}$ \eqref{eq:Gammas}, it holds
+\begin{align*}
+\Gamma_t^{s+1}
+& \geq \eta_s \left[ 1 - \frac{c_1^{s+1}}{\beta_s} - \eta_s (1+2c_1^{s+1})\right]\\
+&> \eta_s \left[ \frac{1}{2} - \eta_s (1+\beta_s)\right],
+\end{align*}
+where the last inequality holds for \eqref{c-beta}.
+Thus, if \eqref{cond1} holds, then obviously, $\Gamma_t^{s+1}>0$, $t=0,\ldots,m-1.$
+Therefore, we end the proof of this lemma.
+\end{proof}
+
+Based on the above lemma and the existing \cite[Theorem 2]{pmlr-v48-reddi16}, we directly have the following proposition on the convergence of SVRG with a generic step size $\{\eta_s\}_{s=0}^{S-1}$.
+
+\begin{proposition}
+\label{svrg-generic}
+Let $\{\{{\bf X}_t^s\}_{t=1}^m\}_{s=1}^S$ be a sequence generated by SVRG with a sequence of generic step sizes $\{\eta_s\}_{s=0}^S$. If the following conditions hold:
+\begin{align}
+&\eta_s + 4(m-1)\eta_s^3 L^3 < 1/2,\tag{\ref{cond1}}\\
+&(m-1)\eta_s^2L^2\left[ 2(m-1)\eta_s L +1 \right]<1/2,\tag{\ref{cond2}}
+\end{align}
+then we have
+\[
+\mathbb{E}[\|F({\bf X}_{\mathrm{out}})\|^2] \leq \frac{F(\tilde{\bf X}^0) - F({\bf X}^*)}{m \cdot S \cdot \gamma_S},
+\]
+where ${\bf X}^*$ is an optimal solution to \eqref{eq:2}, and
+\begin{align*}
+\gamma_S
+&: = \min_{0\leq s \leq S-1,\ 0 \leq t \leq m-1} \Gamma_t^{s+1}\\
+&\geq \min_{0\leq s \leq S-1} \left\{\eta_s\left[ \frac{1}{2} - \eta_s(1+4(m-1)L^3\eta_s^2)\right]\right\}.
+\end{align*}
+\end{proposition}
+
+Based on Proposition \ref{svrg-generic}, we show the proof of Theorem \ref{svrg_bb_nonconvex}.
+
+\begin{proof}[Proof of Theorem \ref{svrg_bb_nonconvex}]
+By \eqref{eq:bound-rbb}, we have
+\[
+\eta_s \leq \frac{1}{m\epsilon}, \quad s = 0,\ldots, m-1.
+\]
+In order to show the conditions \eqref{cond1}-\eqref{cond2} in Proposition \ref{svrg-generic}, it suffices to show
+\begin{align*}
+&\frac{1}{m\epsilon} + 4m\cdot L^2 \cdot \frac{1}{m^3\epsilon^3} < 1/2,\\
+& m \cdot \frac{1}{m^2\epsilon^2} \cdot L^2 \left[2m \cdot \frac{1}{m \epsilon} +1 \right]<1/2.
+\end{align*}
+Thus, the convergence condition on $m$ in Theorem \ref{svrg_bb_nonconvex} can be easily derived by solving the above two inequalities.
+
+
+The second part of Theorem \ref{svrg_bb_nonconvex} for the SBB$_0$ step size holds by noting that in this case, the upper bound of $\eta_s$
+\[
+\eta_s \leq \frac{1}{m\mu}, \quad s = 0,\ldots, m-1.
+\]
+The convergence rate can be derived by the similar proof of the first part.
+Therefore, we end the proof of this theorem.
+\end{proof}
+
+
+\end{document}
